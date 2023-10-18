@@ -1,7 +1,7 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   //should allow to connect to the sql since the var $conn in index.php is linking to sql
-  include 'index.php';
+  include 'connection.php';
   //gets a username and password, as well as password confirmation
   $user = $_POST["username"];
   $pword = $_POST["password"];
@@ -45,29 +45,54 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body>
   <?php
+
   if ($success) {
-    echo "REGISTRATION COMPLETE, YOU MAY NOW LOG IN";
-    //should send the user back to the main page which will reprompt login
-    header("index.php");
+
+    echo ' <div class="success" role="alert"> 
+        <strong>Success!</strong> Your account is  
+        now created and you can login.  
+        <button type="button" class="close"
+            data-dismiss="alert" aria-label="Close">  
+            <span aria-hidden="true">x</span>  
+        </button>  
+    </div> ';
   }
+
   if ($p_error) {
-    echo "REGISTRATION FAILED, PASSWORDS DO NOT MATCH";
-    //should restart the registration
-    header("registration.php");
+
+    echo ' <div class="wrong password" role="alert">  
+    <strong>Error! Passwords dont match</strong>
+
+   <button type="button" class="close" 
+        data-dismiss="alert aria-label="Close"> 
+        <span aria-hidden="true">x</span>  
+   </button>  
+ </div> ';
   }
+
   if ($u_error) {
-    echo "REGISTRATION FAILED, USERNAME ALREADY TAKEN";
-    //should restart the registration
-    header("registration.php");
+    echo ' <div class="duplicate username" role="alert"> 
+
+    <strong>Error! Username is taken</strong> 
+    <button type="button" class="close" 
+        data-dismiss="alert" aria-label="Close">  
+        <span aria-hidden="true">x</span>  
+    </button> 
+   </div> ';
   }
+
   ?>
 
   <div class="container">
-    <h1>REGISTER HERE<h1>
-        <form action="register.php" method="post">
+    <a href="login.php">
+      <button>Log In</button>
+    </a>
+    <h3>REGISTER HERE<h3>
+        <form action="registration.php" method="post">
           <!-- username entry -->
           <div class="entries">
             <label for="username">username</label>
+            <input type="text" class="form-control" id="username" name="username">
           </div>
           <!-- password entry -->
           <div class="entries">
