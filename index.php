@@ -2,21 +2,7 @@
 // Start the session to manage logged-in state
 session_start();
 
-// Database connection. Adjust parameters accordingly.
-$host = 'localhost';
-$db = 'music_db';
-$user = 'root'; // Default XAMPP user
-$pass = ''; // No password by default in XAMPP
-
-$conn = new mysqli($host, $user, $pass, $db);
-
-// Check for connection errors
-if ($conn->connect_errno) {
-    echo "Failed to connect to MySQL: " . $conn->connect_error;
-    exit();
-} else {
-    echo "success";
-}
+include 'connection.php';
 
 // Fetch songs
 $result = $conn->query("SELECT * FROM ratings");
@@ -36,7 +22,7 @@ $result = $conn->query("SELECT * FROM ratings");
     <?php
     if (isset($_SESSION['username'])) {
         echo "<p>Logged in as: " . $_SESSION['username'] . "</p>";
-        echo '<a href="logout.php">Logout</a>';
+        // echo '<a href="logout.php">Logout</a>';
     } else {
         echo '<a href="registration.php">Register</a> | ';
         echo '<a href="login.php">Login</a>';
