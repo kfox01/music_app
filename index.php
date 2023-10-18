@@ -7,13 +7,17 @@ $host = 'localhost';
 $db   = 'music_db';
 $user = 'root'; // Default XAMPP user
 $pass = '';     // No password by default in XAMPP
-$charset = 'utf8mb4';
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-$pdo = new PDO($dsn, $user, $pass);
+
+$mysqli = new mysqli($host, $user, $pass, $db);
+
+// Check for connection errors
+if ($mysqli->connect_errno) {
+    echo "Failed to connect to MySQL: " . $mysqli->connect_error;
+    exit();
+}
 
 // Fetch songs
-$query = $pdo->query("SELECT * FROM ratings");
-$songs = $query->fetchAll(PDO::FETCH_ASSOC);
+$result = $mysqli->query("SELECT * FROM ratings");
 ?>
 
 <!DOCTYPE html>
@@ -44,7 +48,7 @@ $songs = $query->fetchAll(PDO::FETCH_ASSOC);
             <th>Actions</th>
         </tr>
         <?php
-        foreach ($songs as $song) {
+        while ($song = $result->fetch_assoc()) {
             echo "<tr>";
             echo "<td>" . $song['artist'] . "</td>";
             echo "<td>" . $song['song'] . "</td>";
