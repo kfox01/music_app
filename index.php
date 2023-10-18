@@ -14,8 +14,9 @@ $conn = new mysqli($host, $user, $pass, $db);
 if ($conn->connect_errno) {
     echo "Failed to connect to MySQL: " . $conn->connect_error;
     exit();
+} else {
+    echo "success";
 }
-echo "success";
 
 // Fetch songs
 $result = $conn->query("SELECT * FROM ratings");
@@ -37,7 +38,7 @@ $result = $conn->query("SELECT * FROM ratings");
         echo "<p>Logged in as: " . $_SESSION['username'] . "</p>";
         echo '<a href="logout.php">Logout</a>';
     } else {
-        echo '<a href="register.php">Register</a> | ';
+        echo '<a href="registration.php">Register</a> | ';
         echo '<a href="login.php">Login</a>';
     }
     ?>
