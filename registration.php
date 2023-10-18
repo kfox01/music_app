@@ -1,6 +1,6 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
+//error_reporting(E_ALL);
+//ini_set('display_errors', '1');
 $success = false; //true when user is added
 $p_error = false; //true when passwords dont match
 $u_error = false; //true when username is a duplicate
@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $result = mysqli_query($conn, $enter_user);
       if ($result) {
         $success = true; //user added
-        echo "Successful submission";
+        //echo "Successful submission";
       }
     } else {
       $p_error = true; //password check failure
@@ -51,6 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   if ($success) {
     echo "Account created, you can now continue to login page";
+    header('login.php');
   }
 
   if ($p_error) {
