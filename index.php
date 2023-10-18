@@ -4,28 +4,31 @@ session_start();
 
 // Database connection. Adjust parameters accordingly.
 $host = 'localhost';
-$db   = 'music_db';
+$db = 'music_db';
 $user = 'root'; // Default XAMPP user
-$pass = '';     // No password by default in XAMPP
+$pass = ''; // No password by default in XAMPP
 
-$mysqli = new mysqli($host, $user, $pass, $db);
+$conn = new mysqli($host, $user, $pass, $db);
 
 // Check for connection errors
-if ($mysqli->connect_errno) {
-    echo "Failed to connect to MySQL: " . $mysqli->connect_error;
+if ($conn->connect_errno) {
+    echo "Failed to connect to MySQL: " . $conn->connect_error;
     exit();
 }
+echo "success";
 
 // Fetch songs
-$result = $mysqli->query("SELECT * FROM ratings");
+$result = $conn->query("SELECT * FROM ratings");
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Music App - Home</title>
 </head>
+
 <body>
     <h1>Welcome to Music App</h1>
 
@@ -69,4 +72,5 @@ $result = $mysqli->query("SELECT * FROM ratings");
     <?php endif; ?>
 
 </body>
+
 </html>
