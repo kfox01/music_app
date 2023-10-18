@@ -27,8 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
       $p_error = true; //password check failure
     }
-  }
-  if ($check > 1) {
+  } else if ($check > 1) {
     $u_error = true;
   }
 }
