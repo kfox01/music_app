@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 // Fetch the song details for the form
 $songID = $_GET["id"];
-$query = "SELECT * FROM songs WHERE id = $songID"; 
+$query = "SELECT * FROM songs WHERE id = $songID";
 $result = mysqli_query($conn, $query);
 $songDetails = mysqli_fetch_assoc($result);
 ?>
@@ -39,7 +39,8 @@ $songDetails = mysqli_fetch_assoc($result);
     <input type="text" id="artist" name="artist" value="<?php echo $songDetails['artist']; ?>" required><br><br>
 
     <label for="rating">Rating (1-5):</label>
-    <input type="number" id="rating" name="rating" value="<?php echo $songDetails['rating']; ?>" min="1" max="5" required><br><br>
+    <input type="number" id="rating" name="rating" value="<?php echo $songDetails['rating']; ?>" min="1" max="5"
+        required><br><br>
 
     <input type="submit" value="Update Song">
 </form>
