@@ -35,7 +35,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
   <?php
   if ($success) {
-    echo "Welcome '$user";
+    session_start();
+    $_SESSION["username"] = $user;
+    header("Location: index.php");
+    exit();
   }
   if ($p_error) {
     echo "Error, incorrect password entered";
