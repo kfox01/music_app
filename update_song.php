@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // ...
 
     // Update the song details in the database
-    $updateQuery = "UPDATE songs SET title = '$title', artist = '$artist', rating = '$rating' WHERE id = '$songID'";
+    $updateQuery = "UPDATE ratings SET title = '$title', artist = '$artist', rating = '$rating' WHERE id = '$songID'";
 
     if (mysqli_query($conn, $updateQuery)) {
         echo "Song updated successfully.";
@@ -23,14 +23,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 // Fetch the song details for the form
-$songID = $_GET['id'];
-$query = "SELECT * FROM songs WHERE id = $songID";
+$query = "SELECT * FROM ratings WHERE id = '$songID'";
 $result = mysqli_query($conn, $query);
 $songDetails = mysqli_fetch_assoc($result);
 ?>
 
 <!-- HTML form for updating song details -->
-<form method="POST" action="update_song.php">
+<form method="post" action="update_song.php">
     <input type="hidden" name="song_id" value="<?php echo $songDetails['id']; ?>">
     <label for="title">Title:</label>
     <input type="text" id="title" name="title" value="<?php echo $songDetails['title']; ?>" required><br><br>
