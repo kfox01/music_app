@@ -4,16 +4,16 @@ include 'connection.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Form was submitted, process the data here
-    $songID = $_POST["id"];
     $title = $_POST["title"];
     $artist = $_POST["artist"];
     $rating = $_POST["rating"];
+    $songID = urldecode($_GET['id']);
 
     // Validate the form data
     // ...
 
     // Update the song details in the database
-    $updateQuery = "UPDATE songs SET title = '$title', artist = '$artist', rating = '$rating' WHERE id = $songID";
+    $updateQuery = "UPDATE songs SET title = '$title', artist = '$artist', rating = '$rating' WHERE id = '$songID'";
 
     if (mysqli_query($conn, $updateQuery)) {
         echo "Song updated successfully.";
@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 // Fetch the song details for the form
-$songID = $_GET["id"];
+$songID = $_GET['id'];
 $query = "SELECT * FROM songs WHERE id = $songID";
 $result = mysqli_query($conn, $query);
 $songDetails = mysqli_fetch_assoc($result);
