@@ -6,10 +6,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   include 'connection.php';
   $user = $_POST["username"];
   $entered_pword = trim($_POST["password"]);
-  $check_1 = "SELECT * from users where username='$user'";
-  $check_2 = mysqli_query($conn, $check_1);
-  $check_3 = mysqli_num_rows($check_2);
-  if ($check_3 == 1) {
+
+  $select_query = "SELECT * from users where username= ?";
+  $check_select = $conn->prepare($select_query);
+  $check_select->bind_param("s", $user);
+  $check_select->execute();
+  $check_select->store_result();
+
+  if ($check_select->num_rows == 1) {
     $get_entry = mysqli_fetch_assoc($check_2);
     $stored_pword = $get_entry['password'];
     if (password_verify($entered_pword, $stored_pword)) {

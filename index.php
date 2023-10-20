@@ -44,10 +44,9 @@ $result = $conn->query("SELECT * FROM ratings");
             echo "<td>" . $song['artist'] . "</td>";
             echo "<td>" . $song['rating'] . "</td>";
             echo "<td>";
-            if (isset($_SESSION['username']) && $_SESSION['username'] == $song['user']) {
-                $send_id = $song['id']; ?>
+            if (isset($_SESSION['username']) && $_SESSION['username'] == $song['user']) { ?>
                 <a href="update_song.php?id=<?php echo urlencode($song['id']); ?>">Edit</a> |
-                <a href="update_song.php?id=<?php echo urlencode($send_id); ?>">Delete</a>
+                <a href="delete.php?id=<?php echo urlencode($song['id']); ?>">Delete</a>
             <?php }
             echo "</td>";
             echo "</tr>";

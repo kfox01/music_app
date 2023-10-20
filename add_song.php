@@ -1,5 +1,4 @@
 <?php
-
 //Include database connection file
 include 'connection.php';
 
@@ -19,15 +18,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Invalid rating. Please enter a number between 1 and 5.";
     } else {
         //Check if the song has already been inputed by the user
-        $checkQuery = "SELECT * FROM ratings WHERE title = '$title' AND user = '$user'";
-        $checkResult = mysqli_query($conn, $checkQuery);
-        $checkRows = mysqli_num_rows($checkResult);
-
-        //If the song has already been inputed by the user echo an error, if it hasn't then add the song to the database.     
-        if ($checkRows == 0) {
-            $insertQuery = "INSERT INTO ratings (user, title, artist, rating) VALUES ('$user', '$title', '$artist', '$rating')";
-            if (mysqli_query($conn, $insertQuery)) {
+        $select_query = "SELECT * FROM ratings WHERE title = ? AND user = ?";
+        $check_select = $conn->prepare($select_query);
+        $check_select->bind_param("ss", $title, $user);
+        $check_select->execute();
+        $check_select->store_result();
+        if ($check_select->num_rows == 0) {
+            $insert_query = "INSERT INTO ratings (user, title, artist, rating) VALUES (? , ? , ? , ?)";
+            $check_insert = $conn->prepare($insert_query);
+            $check_insert->bind_param("sssi", $user, $title, $artist, $rating);
+            if ($check_insert->execute()) {
                 echo "Song added successfully.";
+                header("Location: index.php");
             } else {
                 echo "Error: " . mysqli_error($conn);
             }
