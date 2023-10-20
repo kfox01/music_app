@@ -3,12 +3,12 @@
 //Include database connection file
 include 'connection.php';
 
-
+$user = urldecode($_GET['username']);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $title = $_POST['title'];
     $artist = $_POST['artist'];
     $rating = $_POST['rating'];
-    $user = $_SESSION["username"];
+
 
     //If not all field are filled out, echo an error.
     if (empty($title) || empty($artist) || empty($rating)) {

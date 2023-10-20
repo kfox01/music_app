@@ -1,5 +1,4 @@
 <?php
-
 // Database connection. Adjust parameters accordingly.
 $host = 'localhost';
 $db = 'music_db';

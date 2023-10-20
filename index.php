@@ -20,8 +20,9 @@ $result = $conn->query("SELECT * FROM ratings");
     <h1>Welcome to Music App</h1>
 
     <?php
-    if (isset($_SESSION['username'])) {
-        echo "<p>Logged in as: " . $_SESSION['username'] . "</p>";
+    $user_current = $_SESSION['username'];
+    if (isset($user_current)) {
+        echo "<p>Logged in as: " . $user_current . "</p>";
         // echo '<a href="logout.php">Logout</a>';
     } else {
         header("Location: login.php");
@@ -39,11 +40,11 @@ $result = $conn->query("SELECT * FROM ratings");
         <?php
         while ($song = $result->fetch_assoc()) {
             echo "<tr>";
+            echo "<td>" . $song['title'] . "</td>";
             echo "<td>" . $song['artist'] . "</td>";
-            echo "<td>" . $song['song'] . "</td>";
             echo "<td>" . $song['rating'] . "</td>";
             echo "<td>";
-            if (isset($_SESSION['username']) && $_SESSION['username'] == $song['username']) {
+            if (isset($_SESSION['username']) && $_SESSION['username'] == $song['user']) {
                 echo '<a href="edit.php?id=' . $song['id'] . '">Edit</a> | ';
                 echo '<a href="delete.php?id=' . $song['id'] . '">Delete</a>';
             }
@@ -54,7 +55,7 @@ $result = $conn->query("SELECT * FROM ratings");
     </table>
 
     <?php if (isset($_SESSION['username'])): ?>
-        <a href="add_song.php">Add New Song</a>
+        <a href="add_song.php?username=<?php echo urlencode($user_current); ?>">Add New Song</a>
     <?php endif; ?>
 
 </body>
