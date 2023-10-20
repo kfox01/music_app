@@ -1,4 +1,5 @@
 <?php
+
 // Include database connection file
 include 'connection.php';
 
@@ -7,29 +8,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $title = $_POST["title"];
     $artist = $_POST["artist"];
     $rating = $_POST["rating"];
-    $songID = urldecode($_GET['id']);
+    $songID = isset($_POST['song_id']) ? (int) $_POST['song_id'] : null;
 
-    // Validate the form data
-    // ...
-
-    // Update the song details in the database
-    $updateQuery = "UPDATE ratings SET title = '$title', artist = '$artist', rating = '$rating' WHERE id = '$songID'";
-
-    if (mysqli_query($conn, $updateQuery)) {
-        echo "Song updated successfully.";
+    // Check if the songID is valid (non-null and positive integer)
+    if (!$songID || $songID <= 0) {
+        echo "Invalid song ID.";
     } else {
-        echo "Error updating song: " . mysqli_error($conn);
+        // Use prepared statements to update the song details
+        $updateQuery = "UPDATE ratings SET title = ?, artist = ?, rating = ? WHERE id = ?";
+        //used chatGPT to discover this preparation tactic which fixed our error
+        $stmt = $conn->prepare($updateQuery);
+        $stmt->bind_param("ssii", $title, $artist, $rating, $songID);
+
+        if ($stmt->execute()) {
+            echo "Song updated successfully.";
+            header("Location: index.php");
+            exit();
+        } else {
+            echo "Error updating song: " . $stmt->error;
+        }
+
+        $stmt->close();
     }
 }
 
 // Fetch the song details for the form
-$query = "SELECT * FROM ratings WHERE id = '$songID'";
-$result = mysqli_query($conn, $query);
-$songDetails = mysqli_fetch_assoc($result);
+$songID = isset($_GET['id']) ? (int) $_GET['id'] : null;
+
+if ($songID && $songID > 0) {
+    $query = "SELECT * FROM ratings WHERE id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $songID);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $songDetails = $result->fetch_assoc();
+    $stmt->close();
+} else {
+    echo "Invalid song ID.";
+}
 ?>
 
 <!-- HTML form for updating song details -->
-<form method="post" action="update_song.php">
+<form action="update_song.php" method="post">
     <input type="hidden" name="song_id" value="<?php echo $songDetails['id']; ?>">
     <label for="title">Title:</label>
     <input type="text" id="title" name="title" value="<?php echo $songDetails['title']; ?>" required><br><br>
