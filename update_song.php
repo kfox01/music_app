@@ -14,7 +14,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!$songID || $songID <= 0) {
         echo "Invalid song ID.";
     } else {
-        // Use prepared statements to update the song details
         $updateQuery = "UPDATE ratings SET title = ?, artist = ?, rating = ? WHERE id = ?";
         //used chatGPT to discover this preparation tactic which fixed our error
         $stmt = $conn->prepare($updateQuery);
