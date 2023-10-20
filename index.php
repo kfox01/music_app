@@ -45,7 +45,7 @@ $result = $conn->query("SELECT * FROM ratings");
             echo "<td>" . $song['rating'] . "</td>";
             echo "<td>";
             if (isset($_SESSION['username']) && $_SESSION['username'] == $song['user']) {
-                echo '<a href="edit.php?id=' . $song['id'] . '">Edit</a> | ';
+                echo '<a href="update_song.php?id=' . $song['id'] . '">Edit</a>';
                 echo '<a href="delete.php?id=' . $song['id'] . '">Delete</a>';
             }
             echo "</td>";
