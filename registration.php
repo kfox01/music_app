@@ -12,18 +12,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $pword = trim($_POST["password"]);
   $cpword = trim($_POST["confirm_password"]);
   //access the sql table users and check username duplication
-  $check_1 = "SELECT * from users where username='$user'";
-  $check_2 = mysqli_query($conn, $check_1);
-  $check_3 = mysqli_num_rows($check_2);
+  $select_query = "SELECT * from users where username = ?";
+  $check_select = $conn->prepare($select_query);
+  $check_select->bind_param("s", $user);
+  $check_select->execute();
+  $check_select->store_result();
   //When a duplicate cannot be found, must check passwords
 //booleans that will be set to true with different conditions
-  if ($check_3 == 0) {
+  if ($check_select->num_rows == 0) {
     if (($pword == $cpword) and $success == false) {
       $pword_hash = password_hash($pword, PASSWORD_BCRYPT);
       //entering user into table after checks
-      $enter_user = $enter_user = "INSERT INTO `users` (`username`, `password`) VALUES ('$user', '$pword_hash')";
-      $result = mysqli_query($conn, $enter_user);
-      if ($result) {
+      $insert_query = "INSERT INTO `users` (`username`, `password`) VALUES (?, ?)";
+      $check_insert = $conn->prepare($insert_query);
+      $check_insert->bind_param("ss", $user, $pword_hash);
+      if ($check_insert->execute()) {
         $success = true; //user added
         //echo "Successful submission";
       }
