@@ -1,5 +1,6 @@
 <?php
-// Start the session to manage logged-in state
+// used chat gpt to set up index file
+//Start the session to manage logged-in state
 session_start();
 
 include 'connection.php';
