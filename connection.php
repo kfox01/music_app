@@ -1,7 +1,7 @@
 <?php
 // Database connection. Adjust parameters accordingly.
 $host = 'localhost';
-$db = 'music_db';
+$db = 'if0_35298826_music_db';
 $user = 'root'; // Default XAMPP user
 $pass = ''; // No password by default in XAMPP
 
