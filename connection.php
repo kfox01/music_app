@@ -1,11 +1,10 @@
 <?php
-// Database connection. Adjust parameters accordingly.
-$host = 'localhost';
+$host = 'sql306.infinityfree.com';
 $db = 'if0_35298826_music_db';
-$user = 'root'; // Default XAMPP user
-$pass = ''; // No password by default in XAMPP
+$user = 'if0_35298826';
+$pass = 'sk8kbk';
 
-$conn = new mysqli($host, $user, $pass, $db);
+$conn = mysqli_connect($host, $user, $pass, $db);
 
 // Check for connection errors
 if ($conn->connect_errno) {
