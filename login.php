@@ -7,15 +7,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $user = $_POST["username"];
   $entered_pword = trim($_POST["password"]);
 
-  $select_query = "SELECT * from users where username= ?";
+  $select_query = "SELECT * from users where username = ?";
   $check_select = $conn->prepare($select_query);
   $check_select->bind_param("s", $user);
   $check_select->execute();
   $check_select->store_result();
 
   if ($check_select->num_rows == 1) {
-    $get_entry = mysqli_fetch_assoc($check_2);
-    $stored_pword = $get_entry['password'];
+    //$get_entry = mysqli_fetch_assoc($check_select);
+    //$stored_pword = $get_entry['password'];
+    $check_select->bind_result($username, $stored_pword); // Bind the result columns
+    $check_select->fetch(); // Fetch the result
     if (password_verify($entered_pword, $stored_pword)) {
       $success = true;
     } else {
@@ -40,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <?php
   if ($success) {
     session_start();
-    $_SESSION["username"] = $user;
+    $_SESSION['username'] = $user;
     header("Location: index.php");
     exit();
   }
